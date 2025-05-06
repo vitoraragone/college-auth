@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Autenticação de Aluno - UNIFAAT</title>
+    <style>
+      :root {
+        --azul-escuro: #004080;
+        --azul-claro: #0098db;
+        --branco: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f0f0;
+        color: #333;
+      }
+
+      header {
+        background-color: var(--branco);
+        color: var(--azul-escuro);
+        padding: 12px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+      }
+
+      header img {
+        height: 40px;
+      }
+
+      nav {
+        display: flex;
+        gap: 10px;
+      }
+
+      nav a {
+        color: var(--azul-escuro);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav a:hover {
+        background-color: var(--azul-claro);
+      }
+
+      /* Botão do menu hamburguer */
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        cursor: pointer;
+        width: 30px;
+        height: 25px;
+      }
+
+      .menu-toggle span {
+        height: 3px;
+        background-color: var(--azul-escuro);
+        margin: 4px 0;
+        border-radius: 2px;
+        transition: 0.3s;
+      }
+
+      /* Menu mobile */
+      @media (max-width: 768px) {
+        nav {
+          display: none;
+          flex-direction: column;
+          background-color: var(--branco);
+          position: absolute;
+          top: 60px;
+          right: 20px;
+          border: 1px solid #fff2;
+          border-radius: 6px;
+          padding: 10px 0;
+        }
+
+        nav.active {
+          display: flex;
+        }
+
+        .menu-toggle {
+          display: flex;
+        }
+      }
+
+      main {
+        margin-top: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 80px);
+        padding: 20px;
+      }
+
+      #carregando {
+        text-align: center;
+      }
+
+      .spinner {
+        border: 8px solid #ccc;
+        border-top: 8px solid var(--azul-claro);
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: girar 1s linear infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes girar {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      #identificacao {
+        display: none;
+        text-align: center;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 100%;
+      }
+
+      #identificacao img {
+        border-radius: 10px;
+        max-width: 150px;
+        margin-bottom: 20px;
+      }
+
+      .dado {
+        margin: 10px 0;
+        font-size: 18px;
+      }
+
+      .qr {
+        margin-top: 20px;
+      }
+
+      .qr img {
+        width: 100px;
+      }
+
+      .validacao {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e9f7ef;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-top: 20px;
+        font-size: 16px;
+        gap: 10px;
+        box-shadow: 0 0 5px rgba(0, 128, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Cabeçalho -->
+    <header>
+      <div class="container">
+        <!-- Link para o logo que leva ao site real da UNIFAAT -->
+        <a href="https://www.unifaat.com.br/" target="_blank">
+          <img
+            src="/assets/centro-universitario-unifaat-1530797134.png"
+            alt="Logo Unifaat"
+          />
+        </a>
+
+        <!-- Menu Toggle para o mobile -->
+        <div class="menu-toggle" id="menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Menu de navegação -->
+        <nav id="nav">
+          <!-- Link corrigido para o "Início" -->
+          <a href="https://www.unifaat.com.br/">Início</a>
+          <a href="https://www.unifaat.com.br/cursos">Cursos</a>
+          <a href="https://www.unifaat.com.br/fale-conosco">Contato</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main>
+      <!-- Tela de carregamento -->
+      <div id="carregando">
+        <h2>Autenticando aluno...</h2>
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Tela de identificação -->
+      <div id="identificacao">
+        <img src="/assets/1656701862496.jpeg" alt="Foto do Aluno" />
+        <div class="dado">
+          <strong>Nome:</strong> Ariel Pinzan Prado de Almeida
+        </div>
+        <div class="dado"><strong>Curso:</strong> Relações Internacionais</div>
+        <div class="dado">
+          <strong>Instituição:</strong> Centro Universitário UNIFAAT
+        </div>
+        <div class="dado">
+          <strong>ID do QR Code:</strong> PORTAL-AUTH%2025&ALUNO-ID%6687900
+        </div>
+
+        <!-- Validação MEC -->
+        <div class="validacao">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="#28a745"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 11.03a.75.75 0 0 0 1.06 0l4.47-4.47a.75.75 0 0 0-1.06-1.06L7.5 9.44 5.56 7.5a.75.75 0 0 0-1.06 1.06l2.47 2.47z"
+            />
+          </svg>
+          <span>
+            Aluno validado no
+            <strong>Cadastro Nacional de Alunos - MEC</strong>.
+          </span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+      // Simula autenticação
+      setTimeout(function () {
+        document.getElementById("carregando").style.display = "none";
+        document.getElementById("identificacao").style.display = "block";
+      }, 3000);
+
+      // Controle do menu mobile
+      const menuToggle = document.getElementById("menu-toggle");
+      const nav = document.getElementById("nav");
+
+      menuToggle.addEventListener("click", () => {
+        nav.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>
